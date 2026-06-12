@@ -24,11 +24,14 @@ jobs:
         # 實體企業專案中，公司會買支援 KVM 的伺服器來跑這個流水線！
         docker run -d -p 4723:4723 -p 6080:6080 -e EMULATOR_DEVICE="Samsung Galaxy S10" -e APPIUM=true -e WEB_VNC=true --name android-container budtmo/docker-android:emulator_11.0
 
-    - name:  第四步：等待系統啟動 (這在無硬體加速環境會稍久)
+    - name: ⏳ 第四步：等待系統與 Appium 啟動 (智能檢測)
       run: |
-        echo "正在等待 Appium 伺服器就緒..."
-        sleep 60
-        docker logs android-container | tail -n 15
+        echo "正在等待 Appium 伺服器就緒 (無硬體加速約需 2~3 分鐘)..."
+        # 寫一個迴圈，每 10 秒檢查一次日誌，直到看到 Appium 啟動成功的關鍵字，最多等 5 分鐘
+        timeout 300 bash -c 'while ! docker logs android-container | grep -q "Appium REST http interface listener started"; do echo "手機還在開機..."; sleep 10; done'
+        echo " Appium 啟動成功，準備執行測試！"
+        # 多等 30 秒讓 Android 系統完全穩定
+        sleep 30
 
     - name:  第五步：執行 Java 測試碼
       run: mvn clean test

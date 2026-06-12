@@ -15,7 +15,7 @@ public class SimpleWebTest {
 
         System.out.println(" 正在連線到 Docker 內的 Appium 伺服器...");
         // 連線到 GitHub 伺服器本機的 4723 port
-        driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), options);
+        driver = new AndroidDriver(new URL("http://127.0.0.1:4723/"), options);
     }
 
     @Test
