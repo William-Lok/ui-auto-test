@@ -11,7 +11,7 @@ public class SimpleWebTest {
         UiAutomator2Options options = new UiAutomator2Options();
         options.setDeviceName("CI-Emulator");
         // 直接測試內建的 Chrome 瀏覽器
-        options.setBrowserName("Chrome");
+	options.setCapability("browserName", "Chrome");
 
         System.out.println(" 正在連線到 Docker 內的 Appium 伺服器...");
         // 連線到 GitHub 伺服器本機的 4723 port
